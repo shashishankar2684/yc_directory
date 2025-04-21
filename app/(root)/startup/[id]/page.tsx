@@ -8,7 +8,7 @@ import { notFound } from 'next/navigation';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
-import markdownit from 'markdown-it';
+import markdownit from 'markdown-it'
 import { Skeleton } from '@/components/ui/skeleton';
 import View from '@/components/View';
 import StartupCard, { StartupTypeCard } from '@/components/StartupCard';
@@ -20,7 +20,7 @@ export const experimental_ppr = true;
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
 
-  const [post, { select: editorPosts }] = await Promise.all([
+  const [post, editorPosts ] = await Promise.all([
     client.fetch(STARTUP_BY_ID_QUERY, { id }),
     client.fetch(PLAYLIST_BY_SLUG_QUERY, {
       slug: 'editor-picks-new',
@@ -35,7 +35,6 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     <>
       <section className='pink_container !min-h-[230px]'>
         <p className='tag'>{formatDate(post?._createdAt)}</p>
-
         <h1 className='heading'>This is a startup number: {post.title}</h1>
         <p className='sub-heading !max-w-5xl'>{post.description}</p>
       </section>
@@ -69,6 +68,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           </div>
 
           <h3 className='text-30-bold'>Pitch Details</h3>
+
           {parsedContent ? (
             <article
               className='prose max-w-4xl font-work-sans break-all'
@@ -79,6 +79,8 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           )}
         </div>
         <hr className='divider' />
+
+        {/* EDITOR SELECTED STARTUPS */}
 
         {editorPosts?.length > 0 && (
           <div className='max-w-4xl mx-auto'>

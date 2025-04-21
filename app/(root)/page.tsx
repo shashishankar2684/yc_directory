@@ -1,24 +1,16 @@
 import Image from "next/image";
 import SearchForm from "../../components/SearchForm";
-import StartupCard from "@/components/StartupCard";
+import StartupCard, {StartupTypeCard} from "@/components/StartupCard";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
 export default async function Home( { searchParams }: {
   searchParams: Promise<{ query?: string }>
 }) {
   const query = (await searchParams).query;
-
-  const posts = [
-   {
-    _createdAt : new Date(),
-    views : 55,
-    author : { _id : 1 , name : "divyansh" },
-    _id : 1,
-    description: "this is the description",
-    image : "https://www.cio.com/wp-content/uploads/2025/02/3829539-0-75501800-1740132217-shutterstock_2482705481.jpg?quality=50&strip=all",
-    category : "Robots",
-    title : "we robots"
-   },
-  ];
+  const params = { search: query || null };
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
+  
 
   return (
     <>
@@ -41,7 +33,7 @@ export default async function Home( { searchParams }: {
 
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ? (
-            posts.map((post: StartupCardType ) => (
+            posts.map((post: StartupTypeCard ) => (
                <StartupCard key={post?._id} post={post} /> 
               ))
           ) : (
@@ -49,9 +41,9 @@ export default async function Home( { searchParams }: {
           )}
 
         </ul>
-
-
     </section>
+
+    <SanityLive />
     
     </>
   );
