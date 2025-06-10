@@ -14,11 +14,6 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const id = (await params).id;
     const session = await auth();
 
-    console.log(id);
-
-    console.log(session);
-
-
     const user = await client.fetch(AUTHOR_BY_ID_QUERY, { id });
     console.log(user);
 
